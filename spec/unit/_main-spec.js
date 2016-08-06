@@ -34,8 +34,8 @@ context ('unit-test :: main', function () {
       mainView.initialize();
       let childNodes = mainView.childNodes;
       expect(childNodes).to.have.length(2);
-      expect(childNodes[0].tagName).to.equal('H1');
-      expect(childNodes[1].tagName).to.equal('UL');
+      expect(childNodes[0].tagName).to.equal('DIV');
+      expect(childNodes[1].tagName).to.equal('DIV');
     });
 
     it ('should sort all children in the list', function () {

@@ -14,7 +14,7 @@ const evaluator = function _evaluator (model, options) {
     return model.textContent;
   }
   return '';
-}
+};
 
 const sortArray = function _sortArray (list, options) {
   if (!list) {
@@ -41,7 +41,7 @@ const sortArray = function _sortArray (list, options) {
 
 const castToArray = function _castToArray (whatever) {
   return Array.apply(null, whatever);
-}
+};
 
 /**
 * Helpers.

@@ -38,6 +38,8 @@ const _modalRemoveQuickConstructor = _utility.registerComponent(_modalRemoveQuic
 
 const _views = new WeakMap();
 
+const _api = require('./_api');
+
 let bypass = false;
 
 function elevateToProject () {
@@ -673,6 +675,9 @@ const projectViewer = {
         if (atom.config.get(_utility.getConfig('startupVisibility')) && atom.config.get(_utility.getConfig('statusBarVisibility'))) {
             addToStatusBar.call(this);
         }
+    },
+    consumeProjectViewer: function _consumeProjectViewer () {
+      return _api;
     }
 };
 

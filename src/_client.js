@@ -1,81 +1,81 @@
 'use strict';
 
-const groupMapper = new WeakMap();
+const clientMapper = new WeakMap();
 const _helpers = require('./_helpers');
 const _constants = require('./_constants');
 
 function createModel () {
   return Object.create(null, {
-    groupId: {
+    clientId: {
       configurable: false,
       enumerable: false,
       writable: false,
       value: 'pv_' + Date.now()
     },
-    groupSort: {
+    clientSort: {
       configurable: false,
       enumerable: false,
       set: function (sorting) {
-        let obj = groupMapper.get(this);
+        let obj = clientMapper.get(this);
         if (!obj) {
           obj = {};
-          groupMapper.set(this, obj);
+          clientMapper.set(this, obj);
         }
         if (_constants.allowedSorts.indexOf(sorting) === -1) {
           return;
         }
-        obj.groupSort = sorting;
+        obj.clientSort = sorting;
       },
       get: function () {
-        let obj = groupMapper.get(this);
-        if (obj && obj.hasOwnProperty('groupSort')) {
-          return obj.groupSort;
+        let obj = clientMapper.get(this);
+        if (obj && obj.hasOwnProperty('clientSort')) {
+          return obj.clientSort;
         }
         return 'position';
       }
     },
-    groupName: {
+    clientName: {
       configurable: false,
       enumerable: false,
       set: function (name) {
-        let obj = groupMapper.get(this);
+        let obj = clientMapper.get(this);
         if (!obj) {
           obj = {};
-          groupMapper.set(this, obj);
+          clientMapper.set(this, obj);
         }
         if (Number(name) === name) {
           return;
         }
-        obj.groupName = name;
+        obj.clientName = name;
       },
       get: function () {
-        let obj = groupMapper.get(this);
+        let obj = clientMapper.get(this);
         if (!obj) {
           return null;
         }
-        return obj.groupName;
+        return obj.clientName;
       }
     },
-    groupIcon: {
+    clientIcon: {
       configurable: false,
       enumerable: false,
       set: function (icon) {
-        let obj = groupMapper.get(this);
+        let obj = clientMapper.get(this);
         if (!obj) {
           obj = {};
-          groupMapper.set(this, obj);
+          clientMapper.set(this, obj);
         }
         if (Number(icon) === icon) {
           return;
         }
-        obj.groupIcon = icon;
+        obj.clientIcon = icon;
       },
       get: function () {
-        let obj = groupMapper.get(this);
+        let obj = clientMapper.get(this);
         if (!obj) {
           return null;
         }
-        return obj.groupIcon;
+        return obj.clientIcon;
       }
     }
   });
@@ -92,7 +92,7 @@ const viewMethods = {
     contentNode.removeEventListener('click', this.toggle.bind(this));
   },
   getModel: function _getModel () {
-    return groupMapper.get(this);
+    return clientMapper.get(this);
   },
   initialize: function initialize () {
     let listItem = document.createElement('div');
@@ -110,22 +110,22 @@ const viewMethods = {
     let spanNode = this.querySelector('div.list-item span');
     let contentNode = this.querySelector('div.list-item');
 
-    if (model.groupIcon && !spanNode) {
+    if (model.clientIcon && !spanNode) {
       contentNode.textContent = '';
       spanNode = document.createElement('span');
       contentNode.appendChild(spanNode);
     }
 
-    if (model.groupIcon) {
+    if (model.clientIcon) {
       contentNode = spanNode;
-      contentNode.classList.add('icon', model.groupIcon);
+      contentNode.classList.add('icon', model.clientIcon);
     }
     else if (spanNode) {
       contentNode.removeChild(spanNode);
     }
 
-    if (model.groupName) {
-      contentNode.textContent = model.groupName;
+    if (model.clientName) {
+      contentNode.textContent = model.clientName;
     }
 
     let listTree = this.querySelector('.list-tree');
@@ -133,7 +133,7 @@ const viewMethods = {
     if (listTree) {
       let nodes = _helpers.castToArray(listTree.childNodes);
       let sorted = nodes;
-      if (model.groupSort === 'alphabetically') {
+      if (model.clientSort === 'alphabetically') {
         sorted = _helpers.sortArray(nodes)
       }
       sorted.forEach(
@@ -175,13 +175,13 @@ const viewMethods = {
     if (!model) {
       return;
     }
-    return model.groupName;
+    return model.clientName;
   }
 };
 
 function createView (model) {
   const tagExtends = 'li';
-  const tagIs = 'project-viewer-group';
+  const tagIs = 'project-viewer-client';
   let view;
 
   try {
@@ -199,21 +199,21 @@ function createView (model) {
   }
 
   if (model) {
-    groupMapper.set(view, model);
+    clientMapper.set(view, model);
   }
 
   return view;
 }
 
 /**
-* Group.
-* @module project-viewer/group
+* client.
+* @module project-viewer/client
 */
 
 module.exports = {
-  /** Create a group model */
+  /** Create a client model */
   createModel,
 
-  /** Create a group view given a group model */
+  /** Create a client view given a client model */
   createView
 };

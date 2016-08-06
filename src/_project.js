@@ -101,8 +101,16 @@ function createModel () {
 
 const viewMethods = {
   createdCallback: function createdCallback () {},
-  attachedCallback: function attachedCallback () {},
-  detachedCallback: function detachedCallback () {},
+  attachedCallback: function attachedCallback () {
+    this.addEventListener('click', this.open.bind(this));
+  },
+  detachedCallback: function detachedCallback () {
+    this.removeEventListener('click', this.open.bind(this));
+
+  },
+  getModel: function _getModel () {
+    return projectMapper.get(this);
+  },
   initialize: function initialize () {
     this.classList.add('list-item');
   },
@@ -140,6 +148,9 @@ const viewMethods = {
       return;
     }
     return model.projectName;
+  },
+  open: function _open () {
+    console.debug('opened', this.getModel().projectName);
   }
 };
 

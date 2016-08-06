@@ -3,6 +3,7 @@
 const mainMapper = new WeakMap();
 
 const _helpers = require('./_helpers');
+const _constants = require('./_constants');
 
 function createModel () {
   const model = Object.create(null, {
@@ -15,13 +16,7 @@ function createModel () {
           obj = {};
           mainMapper.set(this, obj);
         }
-        const allowedSorts = [
-          'position',
-          'reverse-position',
-          'alphabetically',
-          'reverse-alphabetically'
-        ];
-        if (allowedSorts.indexOf(sorting) === -1) {
+        if (_constants.allowedSorts.indexOf(sorting) === -1) {
           return;
         }
         obj.mainSort = sorting;
@@ -43,14 +38,19 @@ const viewMethods = {
   attachedCallback: function _attachedCallback () {},
   detachedCallback: function _detachedCallback () {},
   initialize: function _initialize () {
-    let h1 = document.createElement('h1');
-    h1.textContent = 'Project Viewer';
+    let panelHeading = document.createElement('div');
+    panelHeading.classList.add('panel-heading');
+    panelHeading.textContent = _constants.title;
+
+    let panelBody = document.createElement('div');
+    panelBody.classList.add('panel-body', 'padded');
 
     let mainTree = document.createElement('ul');
     mainTree.classList.add('list-tree', 'has-collapsable-children');
 
-    this.appendChild(h1);
-    this.appendChild(mainTree);
+    panelBody.appendChild(mainTree);
+    this.appendChild(panelHeading);
+    this.appendChild(panelBody);
 
   },
   render: function _render () {
@@ -99,20 +99,22 @@ const viewMethods = {
 };
 
 function createView (model) {
-  const tagIs = 'projector-viewer';
+  const tagExtends = 'div';
+  const tagIs = 'project-viewer';
   let view;
 
   try {
     const viewConstructor = document.registerElement(
       tagIs,
       {
-        prototype: viewMethods
+        prototype: viewMethods,
+        extends: tagExtends
       }
     );
     Object.setPrototypeOf(viewMethods, HTMLElement.prototype);
     view = new viewConstructor();
   } catch (e) {
-    view =  document.createElement(tagIs);
+    view =  document.createElement(tagExtends, tagIs);
   }
 
   if (model) {
